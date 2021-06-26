@@ -4,11 +4,11 @@ public interface ConnectionMethod {
 
     boolean open();
 
+    boolean close();
+
     void setConnectionMethodListener(ConnectionMethodListener listener);
 
-    void writeBytes(byte[] data);
-
-    void close();
+    boolean writeBytes(byte[] data);
 
     boolean isOpen();
 

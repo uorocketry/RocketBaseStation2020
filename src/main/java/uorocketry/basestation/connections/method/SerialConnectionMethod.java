@@ -6,14 +6,10 @@ import com.fazecast.jSerialComm.SerialPortMessageListener;
 
 import java.nio.charset.StandardCharsets;
 
-public class SerialConnectionMethod implements ConnectionMethod, SerialPortMessageListener {
-
-    private final byte[] DELIMITER = "\n".getBytes(StandardCharsets.UTF_8);
+public class SerialConnectionMethod extends AbstractConnectionMethod implements SerialPortMessageListener {
 
     private SerialPort serialPort;
     private boolean connecting;
-
-    private ConnectionMethodListener listener;
 
     public SerialConnectionMethod(SerialPort newSerialPort) {
         serialPort = newSerialPort;
@@ -33,23 +29,23 @@ public class SerialConnectionMethod implements ConnectionMethod, SerialPortMessa
     }
 
     @Override
-    public void setConnectionMethodListener(ConnectionMethodListener listener) {
-        this.listener = listener;
-    }
-
-    @Override
-    public void writeBytes(byte[] data) {
+    public boolean writeBytes(byte[] data) {
         if (isOpen()) {
-            serialPort.writeBytes(data, data.length);
+            int bytesWritten = serialPort.writeBytes(data, data.length);
+            return bytesWritten != -1;
         }
+
+        return false;
     }
 
     @Override
-    public void close() {
+    public boolean close() {
         if (isOpen()) {
-            serialPort.closePort();
             serialPort.removeDataListener();
+            return serialPort.closePort();
         }
+
+        return true;
     }
 
     @Override

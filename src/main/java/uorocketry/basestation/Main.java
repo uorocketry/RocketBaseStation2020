@@ -206,7 +206,7 @@ public class Main implements ComponentListener, ChangeListener, ActionListener, 
 		}
 
 		for (DeviceConnection deviceConnection : deviceConnectionHolder) {
-		    deviceConnection.getSelectorList().setListData(comSelectorData);
+		    deviceConnection.getComSelectorList().setListData(comSelectorData);
 		}
 	}
 
